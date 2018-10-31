@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Boundary
   - Enemy
+  - Score
+  - Fire
+  - Text
   layers:
   - Default
   - TransparentFX

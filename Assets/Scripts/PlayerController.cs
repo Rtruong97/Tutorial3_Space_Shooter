@@ -39,6 +39,11 @@ public class PlayerController : MonoBehaviour
             Instantiate(shot, shotspawn.position, shotspawn.rotation);
             audioData.Play ();
         }
+
+        {
+            if (Input.GetKey("escape"))
+                Application.Quit();
+        }
     }
 
     void FixedUpdate()
@@ -58,4 +63,7 @@ public class PlayerController : MonoBehaviour
 
         rb.rotation = Quaternion.Euler(0.0f, 0.0f, rb.velocity.x * -tilt);
     }
+
+
+   
 }

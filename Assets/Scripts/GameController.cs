@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -11,17 +11,38 @@ public class GameController : MonoBehaviour
     public float startWait;
     public float waveWait;
 
-    public GUIText scoreText;
+    public Text ScoreText;
+    public Text GameOver;
+    public Text Restart;
+
+    private bool gameOver;
+    private bool restart;
     private int score;
 
     void Start()
     {
-        StartCoroutine (SpawnWaves ());
-
+        gameOver = false;
+        restart = false;
+        Restart.text = "";
+        GameOver.text = "";
+        score = 0;
+        UpdateScore();
+        StartCoroutine(SpawnWaves());
     }
 
-   IEnumerator SpawnWaves ()
 
+
+    private void Update()
+    {
+        if (restart)
+        {
+            if(Input.GetKeyDown (KeyCode.R))
+            {
+                Application.LoadLevel(Application.loadedLevel);
+            }
+        }
+    }
+    IEnumerator SpawnWaves()
     {
         yield return new WaitForSeconds(startWait);
         while (true)
@@ -29,25 +50,35 @@ public class GameController : MonoBehaviour
             for (int i = 0; i < hazardCount; i++)
             {
                 Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
-                Quaternion spawnRotaion = Quaternion.identity;
-                Instantiate(hazard, spawnPosition, spawnRotaion);
+                Quaternion spawnRotation = Quaternion.identity;
+                Instantiate(hazard, spawnPosition, spawnRotation);
                 yield return new WaitForSeconds(spawnWait);
-
             }
-            yield return new WaitForSeconds (waveWait);
+            yield return new WaitForSeconds(waveWait);
+
+            if (gameOver)
+            {
+                Restart.text = "Press 'R' for Restart";
+                restart = true;
+                break;
+            }
         }
     }
-    public void AddScore (int newScoreValue)
+
+    public void AddScore(int newScoreValue)
     {
         score += newScoreValue;
         UpdateScore();
-
     }
 
-    private void UpdateScore()
+    void UpdateScore()
     {
-        scoreText.text = "Score:" + score;
-
+        ScoreText.text = "Score: " + score;
     }
 
+    public void gameover ()
+    {
+        GameOver.text = "Game Over!";
+        gameOver = true;
+    }
 }
