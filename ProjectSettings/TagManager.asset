@@ -9,6 +9,7 @@ TagManager:
   - Score
   - Fire
   - Text
+  - Stars
   layers:
   - Default
   - TransparentFX
